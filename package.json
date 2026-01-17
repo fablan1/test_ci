@@ -1,0 +1,17 @@
+{
+  "name": "llm-readiness-rules",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint:yaml": "node src/lint-yaml.js",
+    "validate:schema": "node src/validate-schema-ajv.js",
+    "validate:semantic": "node src/validate-semantic.js",
+    "build:dist": "node src/build-dist.js"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "glob": "^10.4.5",
+    "yaml": "^2.5.1"
+  }
+}

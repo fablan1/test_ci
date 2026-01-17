@@ -1,0 +1,98 @@
+id: generic_rules_de_v1
+version: 1
+language: "DE"
+
+weights:
+  structure: 0.25
+  answerability: 0.30
+  neutrality: 0.20
+  topical_focus: 0.15
+  entity_binding: 0.10
+
+checks:
+  # --- Struktur: Headings ---
+  - id: h1_exactly_one
+    severity: high
+    dimension: structure
+    rule:
+      op: count
+      selector: h1
+      min: 1
+      max: 1
+    penalty: 12
+    message: "Es muss genau eine H1 geben."
+
+  - id: h2_at_least_two
+    severity: medium
+    dimension: structure
+    rule:
+      op: count
+      selector: h2
+      min: 2
+      max: 50
+    penalty: 6
+    message: "Empfehlung: Mindestens zwei H2-Überschriften für eine klare Gliederung."
+
+  # --- Struktur: Absatz-/Listenmix ---
+  - id: paragraphs_min_five
+    severity: low
+    dimension: structure
+    rule:
+      op: count
+      selector: p
+      min: 5
+      max: 9999
+    penalty: 4
+    message: "Der Text ist sehr kurz: Mindestens fünf Absätze helfen für bessere Lesbarkeit."
+
+  - id: listitems_at_least_three
+    severity: low
+    dimension: structure
+    rule:
+      op: count
+      selector: li
+      min: 3
+      max: 9999
+    penalty: 3
+    message: "Mindestens drei Listenelemente (Bulletpoints) erhöhen Extrahierbarkeit."
+
+  # --- Neutralität: Marketing-Sprache (Density) ---
+  - id: marketing_terms_density
+    severity: medium
+    dimension: neutrality
+    rule:
+      op: term_density
+      terms:
+        - "must-have"
+        - "jetzt entdecken"
+        - "exklusiv"
+        - "perfekt"
+        - "unvergleichlich"
+        - "luxuriös"
+        - "neu bei uns"
+        - "shoppe"
+        - "schnapp dir"
+      maxDensity: 0.02
+    penalty: 10
+    message: "Zu viele werbliche Formulierungen: neutraler und erklärender schreiben."
+
+  # --- Answerability: LLM Checks (Prompts musst du als Dateien anlegen) ---
+  - id: definition_present_intro
+    severity: high
+    dimension: answerability
+    rule:
+      op: llm
+      promptRef: "prompts/definition_check_v1.md"
+      introBlocks: 2
+    penalty: 12
+    message: "Es fehlt eine klare Definition/Einordnung im Einstieg."
+
+  - id: actionable_steps_present
+    severity: medium
+    dimension: answerability
+    rule:
+      op: llm
+      promptRef: "prompts/howto_steps_check_v1.md"
+      introBlocks: 6
+    penalty: 8
+    message: "Mehr konkrete Schritte/Regeln würden die Zitierfähigkeit erhöhen."

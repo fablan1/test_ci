@@ -1,0 +1,7 @@
+version: v1
+selectors:
+  h1: { kind: heading, level: 1 }
+  h2: { kind: heading, level: 2 }
+  h3: { kind: heading, level: 3 }
+  p: { kind: paragraph }
+  li: { kind: listItem }

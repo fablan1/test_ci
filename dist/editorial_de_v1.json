@@ -1,0 +1,28 @@
+{
+  "id": "editorial_de_v1",
+  "version": 1,
+  "language": "DE",
+  "weights": {
+    "structure": 0.25,
+    "answerability": 0.3,
+    "neutrality": 0.2,
+    "topical_focus": 0.15,
+    "entity_binding": 0.1
+  },
+  "checks": [
+    {
+      "id": "placeholder",
+      "severity": "low",
+      "dimension": "structure",
+      "rule": {
+        "op": "count",
+        "selector": "h1",
+        "min": 0,
+        "max": 9999
+      },
+      "penalty": 0,
+      "message": "Placeholder – noch keine echten Regeln."
+    }
+  ],
+  "createdAt": "2026-01-16T13:52:20.621Z"
+}

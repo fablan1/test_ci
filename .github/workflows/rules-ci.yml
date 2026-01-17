@@ -1,0 +1,62 @@
+name: Rules CI
+
+on:
+  pull_request:
+    paths:
+      - "rules/**"
+      - "schema/**"
+      - "src/**"
+      - "prompts/**"
+      - "package.json"
+      - "package-lock.json"
+      - "pnpm-lock.yaml"
+  push:
+    branches: ["main"]
+    paths:
+      - "rules/**"
+      - "schema/**"
+      - "src/**"
+      - "prompts/**"
+      - "package.json"
+      - "package-lock.json"
+      - "pnpm-lock.yaml"
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      # 1) YAML Syntax Check (parse errors -> fail)
+      - name: YAML syntax check
+        run: npm run lint:yaml
+
+      # 2) AJV schema validation
+      - name: Schema validation (AJV)
+        run: npm run validate:schema
+
+      # 3) Semantic validation (custom rules)
+      - name: Semantic validation
+        run: npm run validate:semantic
+
+      # 4) Compile/Build dist JSON (optional but recommended)
+      - name: Build dist
+        run: npm run build:dist
+
+      # Upload dist as artifact (handy for PR review)
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
