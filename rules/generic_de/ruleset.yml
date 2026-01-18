@@ -9,19 +9,14 @@ weights:
   topical_focus: 0.15
   entity_binding: 0.10
 
-sql:
-  table: crawl_pages
-  crawlIdField: crawl_id
-  urlField: url
-
 checks:
   # --- Struktur: Headings ---
   - id: h1_exactly_one
     severity: high
     dimension: structure
     rule:
-      op: range
-      field: h1_count
+      op: count
+      selector: h1
       min: 1
       max: 1
     penalty: 12
