@@ -9,14 +9,32 @@
     "topical_focus": 0.15,
     "entity_binding": 0.1
   },
+  "sql": {
+    "table": "crawl_pages",
+    "crawlIdField": "crawl_id",
+    "urlField": "url"
+  },
   "checks": [
     {
       "id": "h1_exactly_one",
       "severity": "high",
       "dimension": "structure",
       "rule": {
-        "op": "count",
-        "selector": "h1",
+        "op": "range",
+        "field": "h1_count",
+        "min": 1,
+        "max": 1
+      },
+      "penalty": 12,
+      "message": "Es muss genau eine H1 geben."
+    },
+    {
+      "id": "h1_exactly_one_2",
+      "severity": "high",
+      "dimension": "structure",
+      "rule": {
+        "op": "range",
+        "field": "h1_count",
         "min": 1,
         "max": 1
       },
@@ -109,5 +127,5 @@
       "message": "Mehr konkrete Schritte/Regeln würden die Zitierfähigkeit erhöhen."
     }
   ],
-  "createdAt": "2026-01-16T13:52:20.620Z"
+  "createdAt": "2026-01-18T20:39:19.651Z"
 }
