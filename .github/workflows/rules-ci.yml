@@ -21,6 +21,9 @@ on:
       - "package-lock.json"
       - "pnpm-lock.yaml"
 
+permissions:
+  contents: write
+
 jobs:
   validate-and-build:
     runs-on: ubuntu-latest
@@ -28,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -38,23 +43,34 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      # 1) YAML Syntax Check (parse errors -> fail)
       - name: YAML syntax check
         run: npm run lint:yaml
 
-      # 2) AJV schema validation
       - name: Schema validation (AJV)
         run: npm run validate:schema
 
-      # 3) Semantic validation (custom rules)
       - name: Semantic validation
         run: npm run validate:semantic
 
-      # 4) Compile/Build dist JSON (optional but recommended)
       - name: Build dist
         run: npm run build:dist
 
-      # Upload dist as artifact (handy for PR review)
+      - name: Commit dist to repo (main only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add dist/
+
+          if git diff --cached --quiet; then
+            echo "No dist changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(dist): update compiled rules"
+          git push
+
       - name: Upload dist artifacts
         uses: actions/upload-artifact@v4
         with:
