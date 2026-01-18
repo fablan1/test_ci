@@ -26,7 +26,7 @@ checks:
     penalty: 12
     message: "Es muss genau eine H1 geben."
 
-  - id: h1_exactly_one
+  - id: h1_exactly_one_2
     severity: high
     dimension: structure
     rule:
