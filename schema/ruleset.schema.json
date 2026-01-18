@@ -22,7 +22,7 @@
         "entity_binding": { "type": "number", "minimum": 0, "maximum": 1 }
       }
     },
-
+   "sql": { "type": "object" },
     "checks": {
       "type": "array",
       "minItems": 1
