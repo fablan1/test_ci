@@ -6,7 +6,7 @@ const RULESET_GLOB = "rules/**/ruleset.y{a,}ml";
 const SELECTORS_PATH = "schema/selectors.yml";
 
 // Keep MVP tight: must match what your engine supports
-const ALLOWED_OPS = new Set(["count", "term_density", "llm"]);
+const ALLOWED_OPS = new Set(["count", "term_density", "llm", "range"]);
 const ALLOWED_SEVERITIES = new Set(["low", "medium", "high"]);
 const ALLOWED_DIMENSIONS = new Set([
   "structure",
